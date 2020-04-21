@@ -17,36 +17,24 @@
             <div class="col-md-6">
                 <div class="todolist not-done">
                     <h1>Todos</h1>
-                    <input type="text" class="form-control add-todo" placeholder="Add todo" />
+                    <input id="toBeAdded" type="text" class="form-control add-todo" placeholder="Add todo" />
 
                     <div class="col-row-2" style="margin-top: 10px;">
                         <button id="checkAll" class="btn btn-primary">
                             Mark all as done
                         </button>
 
-                        <button id="checkAll" style="float: right;" class="btn btn-primary">
+                        <button id="addTodo" style="float: right;" class="btn btn-primary">
                             Add
                         </button>
                     </div>
 
                     <hr />
-                    <ul id="sortable" class="list-unstyled">
+                    <ul id="toDoList" class="list-unstyled">
                         <li class="ui-state-default">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="" />Take out the trash</label>
-                            </div>
-                        </li>
-                        <li class="ui-state-default">
-                            <div class="checkbox">
-                                <label> <input type="checkbox" value="" />Buy bread</label>
-                            </div>
-                        </li>
-                        <li class="ui-state-default">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="" />Teach penguins to
-                                    fly</label>
+                                    <input type="checkbox" value="" />First trial task</label>
                             </div>
                         </li>
                     </ul>
