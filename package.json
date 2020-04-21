@@ -1,0 +1,9 @@
+{
+    "name": "todolistusingjquery",
+    "version": "1.0.0",
+    "devDependencies": {},
+    "dependencies": {
+        "bootstrap": "^4.4.1",
+        "jquery": "^3.5.0"
+    }
+}

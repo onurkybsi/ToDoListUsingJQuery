@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <title>ToDoListUsingJQuery</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="todolist not-done">
+                    <h1>Todos</h1>
+                    <input type="text" class="form-control add-todo" placeholder="Add todo" />
+
+                    <div class="col-row-2" style="margin-top: 10px;">
+                        <button id="checkAll" class="btn btn-primary">
+                            Mark all as done
+                        </button>
+
+                        <button id="checkAll" style="float: right;" class="btn btn-primary">
+                            Add
+                        </button>
+                    </div>
+
+                    <hr />
+                    <ul id="sortable" class="list-unstyled">
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" />Take out the trash</label>
+                            </div>
+                        </li>
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label> <input type="checkbox" value="" />Buy bread</label>
+                            </div>
+                        </li>
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" />Teach penguins to
+                                    fly</label>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="todo-footer">
+                        <strong><span class="count-todos">
+                                3 Items Left
+                            </span></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="todolist">
+                    <h1>Already Done</h1>
+                    <ul id="done-items" class="list-unstyled">
+                        <li>
+                            Some item
+                            <button class="remove-item btn btn-default btn-xs pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
