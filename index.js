@@ -5,12 +5,23 @@ $("document").ready(function () {
       <li class="ui-state-default">
           <div class="checkbox">
               <label>
-                  <input type="checkbox" value="" />
+                  <input type="checkbox" />
                   ${$("#toBeAdded").val()}
               </label>
           </div>
       </li>
           `);
+    }
+  });
+
+  $("#checkAll").click(function () {
+    $("input[type=checkbox]").prop("checked", true);
+    $("#toDoList").empty();
+  });
+
+  $("input[type=checkbox]").change(function(){
+    if($(this).is(':checked')){
+      $(this).parentsUntil("ul").remove();  
     }
   });
 });
