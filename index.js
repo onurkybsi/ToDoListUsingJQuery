@@ -1,27 +1,34 @@
 $("document").ready(function () {
+  let liCount = $("#toDoList").children("li").length;
+
   $("#addTodo").click(function () {
     if ($("#toBeAdded").val().trim()) {
       $("#toDoList").append(`
-      <li class="ui-state-default">
+      <li id="cb${liCount + 1}" class="ui-state-default">
           <div class="checkbox">
-              <label>
-                  <input type="checkbox" />
-                  ${$("#toBeAdded").val()}
-              </label>
+            <input type="checkbox" />
+
+            <label>
+              ${$("#toBeAdded").val()}
+            </label>
           </div>
       </li>
           `);
+
+      liCount++;
+
+      $("#toBeAdded").val(String.empty);
+
+      $(".count-todos").text(liCount + " Items Left");
     }
   });
 
   $("#checkAll").click(function () {
     $("input[type=checkbox]").prop("checked", true);
-    $("#toDoList").empty();
+    // $("#toDoList").empty();
   });
 
-  $("input[type=checkbox]").change(function(){
-    if($(this).is(':checked')){
-      $(this).parentsUntil("ul").remove();  
-    }
+  $("input[type=checkbox]").on("click", function () {
+    console.log($("input[type=checkbox]"));
   });
 });
