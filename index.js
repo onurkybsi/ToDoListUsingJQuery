@@ -1,25 +1,47 @@
-$("document").ready(function () {
-  let liCount = $("#toDoList").children("li").length;
+const getDatas = () => {
+  let datas = Object.keys(localStorage).map(function (key) {
+    return [String(key), localStorage[key]];
+  });
 
-  $("#addTodo").click(function () {
-    if ($("#toBeAdded").val().trim()) {
-      $("#toDoList").append(`
-      <li id="cb${liCount + 1}" class="ui-state-default">
+  return datas;
+};
+
+const loadContent = (data) => {
+  $("#toDoList").append(`
+      <li id="${data[0]}" class="ui-state-default">
           <div class="checkbox">
             <input type="checkbox" />
-
             <label>
-              ${$("#toBeAdded").val()}
+              ${data[1]}
             </label>
           </div>
       </li>
           `);
+};
 
-      liCount++;
+$("document").ready(function () {
+  let datas = getDatas();
+  let datasLength = datas.length;
+  $(".count-todos").text(datasLength + " Items Left");
+
+  if (datasLength !== 0) {
+    datas.map((d) => {
+      loadContent(d);
+    });
+  }
+
+  $("#addTodo").click(function () {
+    if ($("#toBeAdded").val().trim()) {
+      loadContent(["cb" + String(datasLength + 1), $("#toBeAdded").val()]);
+      localStorage.setItem(
+        "cb" + String(datasLength + 1),
+        $("#toBeAdded").val()
+      );
+
+      datasLength++;
 
       $("#toBeAdded").val(String.empty);
-
-      $(".count-todos").text(liCount + " Items Left");
+      $(".count-todos").text(datasLength + " Items Left");
     }
   });
 
@@ -28,7 +50,18 @@ $("document").ready(function () {
     // $("#toDoList").empty();
   });
 
-  $("input[type=checkbox]").on("click", function () {
-    console.log($("input[type=checkbox]"));
+  $("input[type=checkbox]").on("click", function (e) {
+    e.preventDefault();
+    if ($(this).is(":checked")) {
+      $("#done-items").append(
+        `<li style="margin-top: 10px;">
+          <button class="btn btn-outline-dark btn-block" >
+            ${$(this).siblings("label").text().replace(" ", "")}
+          </button>
+        </li>
+        `
+      );
+      $(this).parents("li").remove();
+    }
   });
 });
