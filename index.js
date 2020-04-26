@@ -27,6 +27,7 @@ $("document").ready(function () {
   if (datasLength !== 0) {
     datas.map((d) => {
       loadContent(d);
+      datasLength++;
     });
   }
 
@@ -45,14 +46,9 @@ $("document").ready(function () {
     }
   });
 
-  $("#checkAll").click(function () {
-    $("input[type=checkbox]").prop("checked", true);
-    // $("#toDoList").empty();
-  });
-
-  $("input[type=checkbox]").on("click", function (e) {
-    e.preventDefault();
-    if ($(this).is(":checked")) {
+  $("#toDoList").change(function (e) {
+    console.log($(e.target))
+    if ($(e.target).prop("checked", true)) {
       $("#done-items").append(
         `<li style="margin-top: 10px;">
           <button class="btn btn-outline-dark btn-block" >
