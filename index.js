@@ -47,17 +47,21 @@ $("document").ready(function () {
   });
 
   $("#toDoList").change(function (e) {
-    console.log($(e.target))
-    if ($(e.target).prop("checked", true)) {
+    let targetInput = $(e.target);
+    if (targetInput.prop("checked")) {
       $("#done-items").append(
         `<li style="margin-top: 10px;">
           <button class="btn btn-outline-dark btn-block" >
-            ${$(this).siblings("label").text().replace(" ", "")}
+            ${targetInput.siblings("label").text().replace(" ", "")}
           </button>
         </li>
         `
       );
-      $(this).parents("li").remove();
+      targetInput.parentsUntil("li").remove();
+      datasLength--;
+      $(".count-todos").text(datasLength + " Items Left");
+    } else {
+      
     }
   });
 });
