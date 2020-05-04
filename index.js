@@ -6,43 +6,72 @@ const getDatas = () => {
   return datas;
 };
 
-const loadContent = (data) => {
-  $("#toDoList").append(`
-      <li id="${data[0]}" class="ui-state-default">
+const addItemToLocalStorage = (data) => {
+  let nextId = 1;
+  let currentDatas = getDatas();
+  console.log(data);
+
+  if(currentDatas.length > 0){
+    currentDatas.forEach((element) => {
+      var id = Number(element[0].charAt(2));
+      if (id > nextId) {
+        nextId = id;
+      }
+    });
+    nextId = nextId + 1;
+  }
+
+  localStorage.setItem(`cb${nextId}`, data);
+
+  return nextId;
+};
+
+const addItemToUl = (ulId, itemId, itemLabel) => {
+  $(`#${ulId}`).append(`
+      <li id="${itemId}" class="ui-state-default">
           <div class="checkbox">
             <input type="checkbox" />
             <label>
-              ${data[1]}
+              ${itemLabel}
             </label>
           </div>
       </li>
           `);
 };
 
+const getItems = () => {
+  let datas = getDatas();
+
+  datas.map((data) => {
+    addItemToUl("toDoList", data[0], JSON.parse(data[1]).value)
+  });
+};
+
+const printRemainingItems = (datasLength) => {
+  $(".count-todos").text(datasLength + " Items Left");
+};
+
 $("document").ready(function () {
   let datas = getDatas();
   let datasLength = datas.length;
-  $(".count-todos").text(datasLength + " Items Left");
+  printRemainingItems(datasLength);
 
   if (datasLength !== 0) {
-    datas.map((d) => {
-      loadContent(d);
-      datasLength++;
-    });
+    getItems();
   }
 
   $("#addTodo").click(function () {
-    if ($("#toBeAdded").val().trim()) {
-      loadContent(["cb" + String(datasLength + 1), $("#toBeAdded").val()]);
-      localStorage.setItem(
-        "cb" + String(datasLength + 1),
-        $("#toBeAdded").val()
-      );
+    let value = $("#toBeAdded").val();
+    if (value.trim()) {
+      let addedId = addItemToLocalStorage(JSON.stringify({ 
+      "value": value,
+      "done": false
+    }));
 
-      datasLength++;
+      addItemToUl("toDoList",  addedId, value);
 
+      printRemainingItems(datasLength + 1);
       $("#toBeAdded").val(String.empty);
-      $(".count-todos").text(datasLength + " Items Left");
     }
   });
 
@@ -57,11 +86,9 @@ $("document").ready(function () {
         </li>
         `
       );
+
       targetInput.parentsUntil("li").remove();
-      datasLength--;
-      $(".count-todos").text(datasLength + " Items Left");
-    } else {
-      
+      printRemainingItems(datasLength - 1);
     }
   });
 });
