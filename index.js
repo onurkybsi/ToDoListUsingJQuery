@@ -7,11 +7,15 @@ const getDatas = () => {
 };
 
 const addItemToLocalStorage = (data) => {
+  let toBeAdded = {
+    value: data.value,
+    done: false,
+  };
+
   let nextId = 1;
   let currentDatas = getDatas();
-  console.log(data);
 
-  if(currentDatas.length > 0){
+  if (currentDatas.length > 0) {
     currentDatas.forEach((element) => {
       var id = Number(element[0].charAt(2));
       if (id > nextId) {
@@ -21,34 +25,61 @@ const addItemToLocalStorage = (data) => {
     nextId = nextId + 1;
   }
 
-  localStorage.setItem(`cb${nextId}`, data);
+  toBeAdded.id = `cb${nextId}`;
 
-  return nextId;
+  localStorage.setItem(`cb${nextId}`, JSON.stringify(toBeAdded));
+
+  return toBeAdded;
 };
 
-const addItemToUl = (ulId, itemId, itemLabel) => {
-  $(`#${ulId}`).append(`
+const addItemToUl = (ulId, item) => {
+  let itemId = item.id;
+  let itemValue = item.value;
+  let isDone = item.done;
+
+  if (!isDone) {
+    $(`#${ulId}`).append(`
       <li id="${itemId}" class="ui-state-default">
           <div class="checkbox">
             <input type="checkbox" />
             <label>
-              ${itemLabel}
+              ${itemValue}
             </label>
           </div>
       </li>
           `);
+  } else {
+    $(ulId).append(
+      `<li id="${itemId}" style="margin-top: 10px;">
+        <button class="btn btn-outline-dark btn-block" >
+          ${itemValue}
+        </button>
+      </li>
+      `
+    );
+  }
 };
 
 const getItems = () => {
   let datas = getDatas();
 
   datas.map((data) => {
-    addItemToUl("toDoList", data[0], JSON.parse(data[1]).value)
+    addItemToUl("toDoList", JSON.parse(data[1]));
   });
 };
 
 const printRemainingItems = (datasLength) => {
-  $(".count-todos").text(datasLength + " Items Left");
+  let length = datasLength;
+  console.log(length);
+  $(".count-todos").text(length + " Items Left");
+};
+
+const deleteItemFromLocalStorage = (id) => {
+  localStorage.removeItem(id);
+};
+
+const deleteItemFromUl = (itemId) => {
+  $(`#${itemId}`).remove();
 };
 
 $("document").ready(function () {
@@ -63,14 +94,14 @@ $("document").ready(function () {
   $("#addTodo").click(function () {
     let value = $("#toBeAdded").val();
     if (value.trim()) {
-      let addedId = addItemToLocalStorage(JSON.stringify({ 
-      "value": value,
-      "done": false
-    }));
+      let addedItem = addItemToLocalStorage({
+        value: value,
+        done: false,
+      });
+      datasLength++;
+      addItemToUl("toDoList", addedItem);
 
-      addItemToUl("toDoList",  addedId, value);
-
-      printRemainingItems(datasLength + 1);
+      printRemainingItems(datasLength);
       $("#toBeAdded").val(String.empty);
     }
   });
@@ -78,17 +109,21 @@ $("document").ready(function () {
   $("#toDoList").change(function (e) {
     let targetInput = $(e.target);
     if (targetInput.prop("checked")) {
-      $("#done-items").append(
-        `<li style="margin-top: 10px;">
-          <button class="btn btn-outline-dark btn-block" >
-            ${targetInput.siblings("label").text().replace(" ", "")}
-          </button>
-        </li>
-        `
-      );
+      addItemToUl("#done-items", {
+        id: targetInput.parents("li").prop("id"),
+        value: targetInput.siblings("label").text().replace(" ", ""),
+        done: true,
+      });
+      datasLength--;
 
-      targetInput.parentsUntil("li").remove();
-      printRemainingItems(datasLength - 1);
+      deleteItemFromUl(targetInput.parents("li").prop("id"));
+      printRemainingItems(datasLength);
     }
+  });
+
+  $("#done-items").click(function (e) {
+    let targetLiId = $(e.target).parents("li").prop("id");
+    deleteItemFromUl(targetLiId);
+    deleteItemFromLocalStorage(targetLiId);
   });
 });
