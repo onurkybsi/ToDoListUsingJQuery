@@ -1,6 +1,6 @@
-let http = require("http");
-let fs = require("fs");
-let path = require("path");
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
 function send404(response) {
   response.writeHead(404, { "Content-Type": "text/plain" });
