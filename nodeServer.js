@@ -22,7 +22,10 @@ let server = http
       let fileUrl;
 
       if (request.url == "/") fileUrl = "/index.html";
-      else fileUrl = request.url;
+      else if (request.url == "/nodeServer.js") {
+        send404(response);
+        return;
+      } else fileUrl = request.url;
 
       let filePath = path.resolve("." + fileUrl);
 
